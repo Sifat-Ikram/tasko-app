@@ -17,24 +17,24 @@ const app = express();
 connectDB();
 
 // Allowed origins for CORS
-// const allowedOrigins = [
-//   "http://localhost:3000",
-//   "https://tasko-frontend-psi.vercel.app",
-// ];
-
-// {
-//     origin: function (origin, callback) {
-//       if (!origin) return callback(null, true); // Allow REST tools or same-origin
-//       if (!allowedOrigins.includes(origin)) {
-//         return callback(new Error("Not allowed by CORS"), false);
-//       }
-//       return callback(null, true);
-//     },
-//     credentials: true, // Allow cookies to be sent cross-origin
-//   }
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://tasko-frontend-psi.vercel.app",
+];
 
 // Use CORS middleware once with custom config
-app.use(cors());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Allow REST tools or same-origin
+      if (!allowedOrigins.includes(origin)) {
+        return callback(new Error("Not allowed by CORS"), false);
+      }
+      return callback(null, true);
+    },
+    credentials: true, // Allow cookies to be sent cross-origin
+  })
+);
 
 app.use(helmet());
 app.use(express.json());

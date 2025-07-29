@@ -20,9 +20,9 @@ export const refresh = async (req, res, next) => {
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: isProduction, // true only in production
+      secure: false,
       maxAge: expiresIn * 1000,
-      sameSite: isProduction ? "None" : "Lax", // None for prod with secure cookies, Lax for dev
+      sameSite: isProduction ? "None" : "Lax",
     });
 
     res.status(200).json({ message: "Access token refreshed" });
