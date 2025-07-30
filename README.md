@@ -71,18 +71,18 @@
    ```bash
    git clone https://github.com/your-username/task-manager-mern.git
    cd task-manager-mern
-2. **For backend
-   cd backend
-   npm install
-   npm run dev
-3. **For frontend
-   cd frontend
-   npm install
-   npm run dev
-4. **env file for backend is
-   PORT=5000
-   MONGO_URI=mongodb+srv://sifatikram96:LCOyswUcj90XyoLr@cluster0.4pqqtzn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-   JWT_SECRET=da8f18f49c767d1e1f3199ff3862752a40a6b2dd3a57d6709bf3b0906267b3a0a7bb262d9b520a1282b411800877f5a73a13aff17ff51a024ffe9c56c98125c2
-   JWT_REFRESH_SECRET=db553ee522803ffb37b26ca55034eb78f8b21fbb764069a0969503e4338314e175d33e8ccbd7d4c55b3c288f3950aeb8dbd5327b8c59f7a6912468bcdc001e66
-   NODE_ENV=production
-   CLIENT_URL=https://tasko-task-management.vercel.app
+2. **For backend**
+   -cd backend
+   -npm install
+   -npm run dev
+3. **For frontend**
+   -cd fron-tend
+   -npm install
+   -npm run dev
+4. **env file for backend**
+   -PORT=5000
+   -MONGO_URI=mongodb+srv://sifatikram96:LCOyswUcj90XyoLr@cluster0.4pqqtzn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+   -JWT_SECRET=da8f18f49c767d1e1f3199ff3862752a40a6b2dd3a57d6709bf3b0906267b3a0a7bb262d9b520a1282b411800877f5a73a13aff17ff51a024ffe9c56c98125c2
+   -JWT_REFRESH_SECRET=db553ee522803ffb37b26ca55034eb78f8b21fbb764069a0969503e4338314e175d33e8ccbd7d4c55b3c288f3950aeb8dbd5327b8c59f7a6912468bcdc001e66
+   -NODE_ENV=production
+   -CLIENT_URL=https://tasko-task-management.vercel.app
