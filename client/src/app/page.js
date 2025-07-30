@@ -46,8 +46,10 @@ export default function LoginForm() {
 
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", data.email);
+        localStorage.setItem("rememberedPassword", data.password);
       } else {
         localStorage.removeItem("rememberedEmail");
+        localStorage.removeItem("rememberedPassword");
       }
 
       Swal.fire({

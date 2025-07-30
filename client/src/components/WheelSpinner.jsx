@@ -1,89 +1,146 @@
 "use client";
+
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Wheel } from "react-custom-roulette";
-import { TbWheel } from "react-icons/tb";
+import { LuckyWheel } from "react-luck-draw";
+import wheel from "../../public/wheel2.png";
+import Image from "next/image";
 
-export default function WheelSpinner({ data, tasks }) {
-  const [mustSpin, setMustSpin] = useState(false);
-  const [prizeNumber, setPrizeNumber] = useState(0);
+export default function WheelSpinner({ filteredTasks }) {
   const router = useRouter();
+  const wheelRef = useRef(null);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  // console.log(filteredTasks);
 
-  const handleSpinClick = () => {
-    if (!data || data.length === 0) return;
-    const newPrizeNumber = Math.floor(Math.random() * data.length);
-    setPrizeNumber(newPrizeNumber);
-    setMustSpin(true);
+  // Define color palette
+  const colors = [
+    "#FF5733", // Bright Red-Orange
+    "#FFC300", // Bright Yellow
+    "#FF33FF", // Bright Pink
+    "#33FF57", // Neon Green
+    "#33FFF6", // Cyan
+    "#FF6B6B", // Bright Coral
+    "#FF8C00", // Bright Orange
+    "#00FFFF", // Aqua
+    "#FFD700", // Gold
+    "#00FF00", // Lime
+  ];
+
+  const activeTasks = filteredTasks.slice(0, 10);
+
+  // Build prizes exactly from activeTasks, same order
+  const prizes = activeTasks.map((task, index) => ({
+    id: index, // this is crucial so onEnd gives correct index
+    fonts: [
+      { text: `\u00A0\u00A0${task.title}\u00A0\u00A0`, fontSize: "14px" },
+    ],
+    background: colors[index % colors.length],
+  }));
+
+  const spin = () => {
+    if (!activeTasks.length || isSpinning) return;
+
+    const index = Math.floor(Math.random() * activeTasks.length);
+    setIsSpinning(true);
+    setSelectedIndex(null);
+
+    // Wait for LuckyWheel to mount before calling play
+    requestAnimationFrame(() => {
+      if (wheelRef.current) {
+        wheelRef.current.play();
+        setTimeout(() => {
+          wheelRef.current.stop(index);
+        }, 3000);
+      } else {
+        console.warn("wheelRef is null on spin");
+      }
+    });
   };
 
   const handleGoToTask = () => {
-    if (!mustSpin && data && data.length > 0) {
-      const selectedTask = data[prizeNumber];
-      const task = tasks.find((t) => t.title === selectedTask.option);
-      router.push(`/dashboard/taskDetails/${task._id}`);
-    } else {
-      alert("Please spin the wheel first!");
+    if (selectedIndex !== null) {
+      const selectedTaskId = activeTasks[selectedIndex].id;
+      console.log(selectedTaskId);
+
+      router.push(`/dashboard/taskDetails/${selectedTaskId}`);
     }
   };
 
+  useEffect(() => {
+    console.log("wheelRef:", wheelRef.current);
+  }, []);
+
   return (
-    <div className="min-h-screen mt-36">
-      {data && data.length > 0 ? (
-        <div className="wheelContainer">
-          <div style={{ transform: "rotate(130deg)" }}>
-            <Wheel
-              mustStartSpinning={mustSpin}
-              prizeNumber={prizeNumber}
-              data={data}
-              outerBorderColor={"#fff"}
-              outerBorderWidth={10}
-              innerBorderColor={"transparent"}
-              radiusLineColor={"#fff"}
-              radiusLineWidth={1}
-              textColors={["#fff"]}
-              textDistance={60}
-              fontSize={[18]}
-              fontWeight={[500]}
-              startingOptionIndex={0}
-              backgroundColors={[
-                "#98DF8A",
-                "#1F77B4",
-                "#AEC7E8",
-                "#FF7F0E",
-                "#FFBB78",
-                "#2CA02C",
-              ]}
-              onStopSpinning={() => {
-                setMustSpin(false);
+    <div className="min-h-screen flex flex-col items-center space-y-8">
+      {/* Pointer */}
+      <div>
+        <div className="relative mt-2 flex justify-center">
+          <div className="w-0 h-0 border-l-[16px] border-r-[16px] border-t-[24px] border-l-transparent border-r-transparent border-t-green-600" />
+        </div>
+
+        <div className="relative w-[430px] aspect-square rounded-full bg-[#b91c1c] flex items-center justify-center mx-auto">
+          {/* Dots around the wheel */}
+          {Array.from({ length: prizes.length }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-white rounded-full"
+              style={{
+                top: "50%",
+                left: "50%",
+                transform: `rotate(${
+                  (360 / prizes.length) * i
+                }deg) translateX(203px) rotate(-${
+                  (360 / prizes.length) * i
+                }deg)`,
               }}
             />
-          </div>
-          <div className="flex flex-col items-center gap-5 mt-20">
-            <h1 className="poppins text-base font-semibold text-black">
-              Spin Wheel to pick your task
-            </h1>
-            <div className="flex justify-center items-center gap-8">
-              <button
-                className="spinButton jakarta text-lg flex items-center gap-3 font-bold text-black bg-[60E5AE] px-6 py-3 rounded-[8px]"
-                onClick={handleSpinClick}
-                disabled={mustSpin}
-              >
-                <TbWheel className="text-lg font-semibold" />
-                {mustSpin ? "Spinning..." : "SPIN"}
-              </button>
-              {!mustSpin && (
-                <button className="spinButton ..." onClick={handleGoToTask}>
-                  Go To Task
-                </button>
-              )}
-            </div>
-          </div>
+          ))}
+
+          {/* Center hub */}
+          <div className="absolute w-6 h-6 bg-white rounded-full z-20" />
+
+          {/* Wheel */}
+          <LuckyWheel
+            ref={wheelRef}
+            width="380px"
+            height="380px"
+            blocks={[{ padding: "0px", background: "#f5f5f5" }]}
+            prizes={prizes}
+            buttons={[]}
+            onEnd={(prize) => {
+              setSelectedIndex(prize.id);
+              setIsSpinning(false);
+            }}
+          />
         </div>
-      ) : (
-        <div className="text-center mt-10 text-gray-500 text-lg">
-          No tasks available in this category.
-        </div>
-      )}
+      </div>
+
+      <div className="flex items-center justify-center space-x-10">
+        {/* Spin Button */}
+        <button
+          onClick={spin}
+          disabled={isSpinning}
+          className={`px-6 py-[10px] flex items-center rounded-[8px] gap-[10px] transition text-white ${
+            isSpinning
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-teal-500 hover:bg-teal-600"
+          }`}
+        >
+          {isSpinning ? "Spinning..." : "Spin"}
+          <Image src={wheel} alt="spin" width={21} height={23} className="" />
+        </button>
+
+        {/* Go to Task Button */}
+        {selectedIndex !== null && activeTasks[selectedIndex] && (
+          <button
+            onClick={handleGoToTask}
+            className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded transition"
+          >
+            Go to Task
+          </button>
+        )}
+      </div>
     </div>
   );
 }

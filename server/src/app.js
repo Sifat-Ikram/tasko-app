@@ -18,8 +18,7 @@ connectDB();
 
 // Allowed origins for CORS
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://tasko-frontend-psi.vercel.app",
+  "https://tasko-task-management.vercel.app"
 ];
 
 // Use CORS middleware once with custom config

@@ -91,7 +91,7 @@ export default function TaskListPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredTasks.length > 0 ? (
-          filteredTasks.map((task) => (
+          filteredTasks.slice(0, 10).map((task) => (
             <TaskCard key={task._id} task={task} onDelete={refetch} />
           ))
         ) : (

@@ -4,9 +4,10 @@ import WheelSpinner from "@/components/WheelSpinner";
 import { useFetchTasks } from "@/hooks/useFetchTasks";
 
 const WheelSpin = () => {
-  const { tasks } = useFetchTasks();
+  const { tasks, isLoading, error } = useFetchTasks();
 
   const categories = [
+    "All",
     "Art and Craft",
     "Nature",
     "Family",
@@ -20,13 +21,15 @@ const WheelSpin = () => {
 
   // Filter tasks when tasks or category changes
   useEffect(() => {
-    if (tasks && tasks.length > 0) {
-      const filtered = tasks
-        .filter((task) => task.category === categoryFilter)
-        .map((task) => ({ id: task.id, option: task.title }));
+    if (tasks.length > 0) {
+      const filtered =
+        categoryFilter === "All"
+          ? tasks.map((task) => ({ id: task._id, title: task.title }))
+          : tasks
+              .filter((task) => task.category === categoryFilter)
+              .map((task) => ({ id: task._id, title: task.title }));
+
       setFilteredTasks(filtered);
-    } else {
-      setFilteredTasks([]);
     }
   }, [tasks, categoryFilter]);
 
@@ -53,10 +56,25 @@ const WheelSpin = () => {
           </select>
         </div>
       </div>
-
-      <div>
-        <WheelSpinner data={filteredTasks} tasks={tasks} />
-      </div>
+      {/* Loading State */}
+      {isLoading ? (
+        <div className="flex flex-col items-center mt-24">
+          <div className="animate-spin h-12 w-12 border-4 border-teal-500 border-t-transparent rounded-full" />
+          <p className="mt-4 text-gray-600 text-lg font-medium">
+            Loading tasks...
+          </p>
+        </div>
+      ) : error ? (
+        <div className="text-center mt-24 text-red-500 font-semibold">
+          Failed to load tasks. Please try again.
+        </div>
+      ) : filteredTasks.length === 0 ? (
+        <div className="text-center mt-24 text-gray-500 font-semibold">
+          No tasks found in this category.
+        </div>
+      ) : (
+        <WheelSpinner filteredTasks={filteredTasks} />
+      )}
     </div>
   );
 };

@@ -68,7 +68,7 @@ export default function DashboardLayout({ children }) {
           backgroundImage: `url(${img.src})`,
         }}
       >
-        <div className="flex justify-between items-center w-11/12 max-w-screen-xl mx-auto">
+        <div className="flex justify-between items-center px-1 sm:w-11/12 max-w-screen-xl mx-auto">
           <div className="flex items-center space-x-2">
             <div className="relative sm:hidden group">
               {/* Keep the group hover on the parent */}
@@ -104,7 +104,7 @@ export default function DashboardLayout({ children }) {
                 width={24}
                 height={24}
               />
-              <h1 className="text-lg sm:text-xl xl:text-2xl font-semibold poppins">
+              <h1 className="text-sm sm:text-xl xl:text-2xl font-semibold poppins">
                 Tasko
               </h1>
             </div>
@@ -145,9 +145,9 @@ export default function DashboardLayout({ children }) {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-1 sm:space-x-2">
-            <IoPersonCircleSharp className="text-2xl sm:text-3xl" />
-            <h1 className="text-base sm:text-lg xl:text-xl font-semibold poppins">
+          <div className="flex items-center space-x-[2px] lg:space-x-2">
+            <IoPersonCircleSharp className="text-lg sm:text-2xl lg:text-3xl" />
+            <h1 className="text-sm sm:text-lg xl:text-xl font-semibold poppins">
               {userName}
             </h1>
             <div className="relative group pb-2">
@@ -155,10 +155,10 @@ export default function DashboardLayout({ children }) {
               <IoChevronDownSharp className="text-base sm:text-lg cursor-pointer mt-2" />
 
               {/* Hover Dropdown */}
-              <div className="absolute right-0 top-full w-28 bg-[#60E5AE] border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition duration-200 z-50">
+              <div className="absolute right-0 top-full bg-[#60E5AE] border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition duration-200 z-50">
                 <button
                   onClick={handleLogout}
-                  className="w-full text-center px-4 py-2 text-sm hover:bg-[#66b695] rounded-md"
+                  className="w-full text-center px-4 cursor-pointer py-2 text-sm hover:bg-[#66b695] rounded-md"
                 >
                   Logout
                 </button>
