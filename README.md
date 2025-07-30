@@ -71,15 +71,15 @@
    ```bash
    git clone https://github.com/your-username/task-manager-mern.git
    cd task-manager-mern
-2. ##For backend
+2. For backend
    - cd backend
    - npm install
    - npm run dev
-3. ##For frontend
+3. For frontend
    - cd fron-tend
    - npm install
    - npm run dev
-4. ##env file for backend
+4. env file for backend
    - PORT=5000
    - MONGO_URI=mongodb+srv://sifatikram96:LCOyswUcj90XyoLr@cluster0.4pqqtzn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
    - JWT_SECRET=da8f18f49c767d1e1f3199ff3862752a40a6b2dd3a57d6709bf3b0906267b3a0a7bb262d9b520a1282b411800877f5a73a13aff17ff51a024ffe9c56c98125c2
