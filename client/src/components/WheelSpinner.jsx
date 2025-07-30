@@ -76,7 +76,7 @@ export default function WheelSpinner({ filteredTasks }) {
       {/* Pointer */}
       <div>
         <div className="relative mt-2 flex justify-center">
-          <div className="w-0 h-0 border-l-[16px] border-r-[16px] border-t-[24px] border-l-transparent border-r-transparent border-t-green-600" />
+          <div className="w-0 h-0 border-l-[20px] border-r-[20px] border-t-[30px] border-l-transparent border-r-transparent border-t-green-600" />
         </div>
 
         <div className="relative w-[430px] aspect-square rounded-full bg-[#b91c1c] flex items-center justify-center mx-auto">
